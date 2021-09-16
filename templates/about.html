@@ -1,0 +1,296 @@
+<!-- When our index.html file loads, Flask inherits everything from the base template.
+Then it looks for a block element (which we choose to call 'content' but can be called 
+anything) & injects that content inherited from base.html into it. If we have multiple 
+blocks on a page, we'll do exact same process as a single block.   --> 
+{% extends "base.html" %}
+{% block content %}
+<!-- We can display a variable in our HTML by using the double curly bracket notation & 
+then put our expression inside of that. This will display this array of list on our
+about.html page. -->
+<!-- {{ list_of_numbers }} -->
+
+<!-- We'll iterate over this array of list created earlier inside our HTML file using a
+for-loop. Using the 'curly bracket & percentage' symbols as we've done before shows that
+it is a statement & not an expression and is called 'logic control'. -->
+<!-- The 'endfor' must be used to let Jinja template know it's the end of our for-loop to 
+    prevent it from throwing unwanted errors. -->
+    
+<!-- What this for-loop does is that it iterates through the 'list_of_numbers' array & 
+displays each 'number' in a <p>aragraph tag on the screen. 
+We don't need this for-loop anymore but I want to keep it in for reference purpose on how 
+to do a for-loop in Python so I'll comment it out. It will be replaced with another code below 
+{% for number in list_of_numbers %}  The 'number' used on these 2 lines is a variable so can be  
+<p>{{ number }}</p>                  named anything else you choose. 
+{% endfor %}  -->
+
+<!-- Since the variable 'company' is an array of objects with key-value pairs, to access any value 
+from it, we'll use either the 'square bracket or dot notation'. 
+{{ company[1]["name"] }}  Square bracket is used here 
+ {{ company[0].name }} --> <!-- Dot notation is used here. It does exactly the same thing as the code above it -->
+
+<!-- Double curly brackets is an indication that it is an expression that's going to display something 
+on the page. In our case, the expression being passed through into my HTML file from Python will be the 
+'page_title' that we've just created for each view. -->
+    <h2>{{ page_title }}</h2>
+    <p>
+        The formation of the group grew out of a meeting Gandalf had with Thorin in Bree which kindled Thorin's interest in 
+        recapturing his long lost family inheritance. (Thorin's grandfather had been the king of the Lonely Mountain when 
+        Smaug came and took it.) Remembering that he had once known an adventurous Hobbit on his travels in the Shire, Gandalf 
+        decided to add Bilbo to their company because he knew that stealth and cunning were preferable to force. Gandalf also 
+        believed that someone like Bilbo could keep the sometimes prideful and stubborn Dwarves from rash action. The superstitious 
+        Dwarves also considered thirteen to be an unlucky number, and as Gandalf had planned to leave on other business, welcomed a 
+        fourteenth to fill into their party.
+    </p>
+
+    <!-- Note that 'member' & 'company' used here are variable names. It's ok to use any name of your choice instead of 'member' but
+    the variable 'company' has to be the same as it's the list we created earlier in the Python (run.py) file. -->
+    <!-- Everytime this for-loop is evaluated, the HTML that's within the for-loop will be injected into our template.
+    In other words, our for-loop will iterate through all of the data in our 'company.json' file down to the 'endfor' & 
+    inject the HTML & variables that we've set within the loop. -->
+    {% for member in company %}
+
+    <!-- When we create a for-loop using Jinja templating language, it also creates an object for us called 'loop'.
+    That 'loop' object has a property called '.index' which shows us exactly which iteration of the loop we are on.
+If we leave it on the next line as an expression & we reload our page, we'll see in the 'about' view that the 1st
+iteration has the number 1 which is for 'Thorin', 2nd iteration has number 2 which is for 'Fili and Kili' etc. 
+We'll move this code into the member.name <h3> tag below but leave the explanation in here for reference purpose 
+    {{ loop.index }} -->
+
+                                        <!-- THORIN OAKENSHIELD'S INFORMATION -->
+        <div class="row featurette">
+            <!-- The codes directly underneath the 'if' statement will display the text on the left & image on the right if 
+            it's an odd loop.index number i.e 1, 3, 5,.... -->
+            {% if loop.index % 2 != 0 %}
+
+                <!-- The "col-md-7" class used here is a bootstrap class to divide the grids we want our text or images to occupy.
+                The full grid is usually 12 i.e "col-12" but here, we used medium grid 7 for our paragraph text so the remaining 
+                5 i.e "col-md-7" bootstrap class will be used for Thorin Oakenshield's image. -->
+                <div class="col-md-7">
+                    <!-- The code on the next line after this comment will reference the 'member' variable from our for-loop above 
+                    and grab the content of the 'name' key from our JSON file. -->
+                    <h3><a href="/about/{{ member.url}}">{{ loop.index }}. {{ member.name }}</a></h3>
+                    <!-- We can also use 'member.name' instead of 'member.url' but because 'Thorin' has 2 names i.e we used his full 
+                    name while the rest characters have 1, it will take some adjustments to be able to use it but if we want to use 
+                    that in future project, it is shown below but will be commented out. This is just to demonstrate some of the Jinja
+                    built-in filters that we can use.   
+                    <h3><a href="/about/{{ member.name|replace('', '-')|replace('&', 'and')|lower }}">{{ loop.index }}. {{ member.name }}</a></h3> -->
+
+
+                    <p>{{ member.description }}</p>   
+                </div>
+                <div class="col-md-5"> <!-- This grid remaining from the full col-12 grid will be used for his image. -->
+                    <!-- We'll add a couple of class names (i.e 2 class names) provided by our 'Clean Blog Template' & 
+                        'Bootstrap' in order to make the data look nicer. -->
+                    <img src="{{ member.image_source }}" alt="" class="featurette-image image-responsive">
+                </div>
+
+            <!-- The codes directly underneath the 'else' statement will display the text on the right & image on the left if 
+            it's an even loop.index number i.e 2, 4, 6,.... -->    
+            {% else %}
+                <div class="col-md-5"> <!-- This grid remaining from the full col-12 grid will be used for his image. -->
+                    <!-- We'll add a couple of class names (i.e 2 class names) provided by our 'Clean Blog Template' & 
+                        'Bootstrap' in order to make the data look nicer. -->
+                    <img src="{{ member.image_source }}" alt="" class="featurette-image image-responsive">
+                </div>
+                <!-- The "col-md-7" class used here is a bootstrap class to divide the grids we want our text or images to occupy.
+                    The full grid is usually 12 i.e "col-12" but here, we used medium grid 7 for our paragraph text so the remaining 
+                    5 i.e "col-md-7" bootstrap class will be used for Thorin Oakenshield's image. -->
+                <div class="col-md-7">
+                    <!-- The code on the next line after this comment will reference the 'member' variable from our for-loop above 
+                    and grab the content of the 'name' key from our JSON file. -->
+                    <h3><a href="/about/{{ member.url}}">{{ loop.index }}. {{ member.name }}</a></h3>
+                    <p>{{ member.description }}</p>   
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        {% if loop.index != loop.length %}
+
+            <hr class="featurette-divider"> <!-- This is another class name provided by the 'Clean Blog Template' -->
+
+        {% endif %}
+
+    {% endfor %}
+
+                        <!-- FILI & KILI'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-5">
+            <img src="https://vignette.wikia.nocookie.net/lotr/images/b/b4/The-Hobbit-Fili-and-Kili.jpg" alt="Fili and Kili's Pictures">
+        </div>
+        <div class="col-md-7">
+            <h3>Fili and Kili</h3>
+            <p>
+                Fíli and Kíli were nephews of Thorin, who was the elder brother of their mother Dís. They were also nephews of Frerin, grandsons of Thráin II, and great-grandsons of Thrór. Fíli's most distinguishing feature was his long nose, the longest of any of the Dwarves in Thorin's company.
+            </p>
+        </div>
+    </div> -->
+
+                                <!-- OIN'S INFORMATION -->
+    <!-- <div class="row featurette"> 
+         The "col-md-7" class used here is a bootstrap class to divide the grids we want our text or images to occupy.
+        The full grid is usually 12 i.e "col-12" but here, we used medium grid 7 for our paragraph text so the remaining 
+        5 i.e "col-md-7" bootstrap class will be used for Thorin Oakenshield's image. 
+        <div class="col-md-7">
+            <h3>Oin</h3>
+            <p>
+                Óin was the older brother of Glóin, cousin of Dwalin and Balin, and uncle of Gimli. Óin's uncle was Fundin, the father of Balin and Dwalin. He usually wore a brown-hooded cloak when travelling. Óin fought in the Battle of Azanulbizar along with Thorin Oakenshield, and in TA 2941 joined with Thorin and Company on the quest to reclaim the Lonely Mountain wearing a brown hood.[2] Óin was one of the Dwarves who bet that Bilbo would come along with them to reclaim the Lonely Mountain. Óin and his brother Glóin were usually in charge of preparing the fire for the Company as they were the most skilled out of the others. He fought in and survived the Battle of Five Armies, and later settled in the Lonely Mountain with King Dáin II Ironfoot, along with many other dwarves of The Company of Thorin.
+            </p>
+        </div>
+        <div class="col-md-5">  This grid remaining from the full col-12 grid will be used for his image. 
+            <img src="https://static.wikia.nocookie.net/lotr/images/e/e8/Oin.jpg" alt="Oin's Picture">
+        </div>
+    </div> -->
+                            <!-- GLOIN'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/f/fc/Gloin_2.jpg" alt="Gloin's Picture">
+        </div>
+        <div class="col-md-7">
+            <h3>Gloin</h3>
+            <p>
+                Glóin was born in TA 2783, after the Dragon Smaug desolated Erebor. He was the younger child of Gróin and younger brother of Óin. In TA 2799, Glóin was known to have fought in the Battle of Azanulbizar, the last battle of the War of the Dwarves and Orcs, though it is unknown how significant his contribution was, being 16 years old.
+        </div>
+    </div> -->
+                                    
+                                                        <!-- BALIN'S INFORMATION -->
+    <!-- <div class="row featurette">
+         The "col-md-7" class used here is a bootstrap class to divide the grids we want our text or images to occupy.
+        The full grid is usually 12 i.e "col-12" but here, we used medium grid 7 for our paragraph text so the remaining 
+        5 i.e "col-md-7" bootstrap class will be used for Thorin Oakenshield's image. 
+        <div class="col-md-7">
+            <h3>Balin</h3>
+            <p>
+                Balin was likely born in the Lonely Mountain before the coming of the dragon Smaug. He had a younger brother named Dwalin, and was amongst those driven from their homes when Smaug attacked the Lonely Mountain. Afterwards, he may have lived in Dunland as a refugee, before fighting in the War of the Dwarves and Orcs which culminated in the Battle of Azanulbizar. Many years later, in approximately TA 2841, he accompanied Thráin II, the father of Thorin, when he attempted to go back to the Lonely Mountain himself, but Thráin was captured and lost.
+            </p>
+        </div>
+        <div class="col-md-5">  This grid remaining from the full col-12 grid will be used for his image. 
+            <img src="https://static.wikia.nocookie.net/lotr/images/5/52/Balin.jpg" alt="Balin's Picture">
+        </div>
+    </div> -->
+
+                            <!-- DWALIN'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/1/1c/Dwalin.jpg" alt="Dwalin's Picture">
+        </div>
+        <div class="col-md-7">
+            <h3>Dwalin</h3>
+            <p>
+                Born in TA 2772, two years after the dragon Smaug had desolated Erebor, Dwalin was the son of Fundin and younger brother of Balin. Later in TA 2841, Dwalin, along with his brother Balin, and a few others accompanied Thráin when he left the Ered Luin on a Quest to reclaim Erebor.
+            </p>
+        </div>
+    </div> -->
+
+                            <!-- ORI'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-7">
+            <h3>Ori</h3>
+            <p>
+                Ori lived in Thorin's Halls in the northern Blue Mountains for many years. In the year TA 2941, Ori became a member of Thorin's Company and travelled with Thorin, Gandalf, Bilbo Baggins, and the other dwarves on the quest for the Lonely Mountain, culminating in the death of Smaug. Finally, he and the other dwarves of Thorin's Company fought in the Battle of Five Armies, which he survived.
+            </p>
+        </div>
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/8/81/Ori.jpeg" alt="Ori's Picture">
+        </div>
+    </div> -->
+
+                                                    <!-- DORI'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/8/89/Dori-markhadlow-p.jpg" alt="Dori's Picture">
+        </div>
+        <div class="col-md-7">
+            <h3>Dori</h3>
+            <p>
+                Before the Quest of Erebor, Dori lived in Thorin's Halls in the northern Blue Mountains with Nori and Ori. In TA 2941, the three became part of Thorin and Company, befriending Bilbo Baggins and traveling with him in search of Smaug's treasure at the Lonely Mountain.
+            </p>
+        </div>
+    </div> -->
+
+                            <!-- NORI'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-7">
+            <h3>Nori</h3>
+            <p>
+                Nori, as was his brother Dori, was a capable flutist, and both seem to have carried their flutes with them. Both shared Bilbo's liking for regular meals. Before the Quest for the Lonely Mountain, Nori lived in Thorin's Halls in the northern Blue Mountains with his two brothers.
+            </p>
+        </div>
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/d/db/Nori-jedbrophy-p.jpg" alt="Nori's Picture">
+        </div>
+    </div> -->
+
+                                            <!-- BIFUR'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/b/b5/Bifur.jpg" alt="Bifur's Picture">
+        </div>
+        <div class="col-md-7">
+            <h3>Bifur</h3>
+            <p>
+                Whilst he was a descendant of the Dwarves of Khazad-dûm, Bifur was not of Durin's Folk. Most of his familial relations are unclear, and what is known of his parentage is very little. He and his family were driven out of their home in the Lonely Mountain by the Dragon Smaug, and were forced to live in exile, where the Dwarf warrior worked as a toy maker. Following Thorin II Oakenshield to a new life at his halls in the Blue Mountains, he continued his life as a toy maker.
+            </p>
+        </div>
+    </div> -->
+
+                            <!-- BOFUR'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-7">
+            <h3>Bofur</h3>
+            <p>
+                Bofur's heritage is unclear, but he was not of Durin's Folk. He and his family hailed from the Blue Mountains. As such, they felt less strongly about the quest to reclaim the Lonely Mountain from the dragon Smaug, with more interest in adventure for its own sake.
+            </p>
+        </div>
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/7/77/Bofur.jpg" alt="Bofur's Picture">
+        </div>
+    </div> -->
+
+                                         <!-- BOMBUR'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/5/5f/Bombur-stephenhunter-p.jpg" alt="Bombur's Picture">
+        </div>
+        <div class="col-md-7">
+            <h3>Bombur</h3>
+            <p>
+                Bombur's parentage is unknown. He is the brother of Bofur and cousin of Bifur. Bombur was not of Durin's line, although he was descended from the Dwarves of Moria. His birth date is unknown, though it fell somewhere between TA 2763 and TA 2859; the brothers Fíli and Kíli were the youngest of the thirteen "by some fifty years," and, after Thorin was captured, Balin was "the eldest left." Fíli was born in TA 2859, and Balin was born in TA 2763. Bombur was thus roughly 150 years old during the quest. Prior to the journey, Bombur likely resided in the Blue Mountains alongside Thorin, after the loss of Thráin II. 
+            </p>
+        </div>
+    </div> -->
+
+                            <!-- BILBO BAGGINS'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-7">
+            <h3>Bilbo</h3>
+            <p>
+                Bilbo Baggins was born on September 22 by Shire Reckoning (around September 12-14 of our calendar), in
+                the year 2890 of the Third Age. He was the only son of Bungo Baggins and Belladonna Took.
+                In Hobbiton, Bungo Baggins constructed a spacious and luxurious Hobbit-hole for Belladonna, which they
+                named Bag End. The family moved to their new home, where Bilbo would spend much of his life.
+                As a young Hobbit, Bilbo was curious and eager for news of the outside world. The Istar wizard, Gandalf,
+                took interest in this unusual quality in Bilbo during his visits to the Shire. Bilbo would later
+                remember Gandalf's Firework displays in the dwelling of his mother's family at Great Smials.
+            </p>
+        </div>
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/b/b6/The_Hobbit_wallpaper_48.jpg" alt="Bilbo's Picture">
+        </div>
+    </div> -->
+
+                                                    <!-- GANDALF'S INFORMATION -->
+    <!-- <div class="row featurette">
+        <div class="col-md-5">
+            <img src="https://static.wikia.nocookie.net/lotr/images/e/e7/Gandalf_the_Grey.jpg" alt="Gandalf's Picture">
+        </div>
+        <div class="col-md-7">
+            <h3>Gandalf</h3>
+            <p>
+                Originally called Olórin, he was accounted as the wisest of the Maiar (with the possible exception of Melian). He was created by Ilúvatar before the Music of the Ainur[1], and was at the beginning of Time amongst the Ainur who entered into Eä.[2] In his "youth", he became one of the Maiar who served Manwë, Varda, Irmo and Nienna. He was associated with light and fire, much like his peer Varda.[3] Yet his ways often took him to Nienna, from whom he learned pity and patience. He loved the Elves, but he walked unseen among them, or wore a fana that appeared like an Elf, and sent them fair visions in their hearts that made them wiser. Throughout his existence, he followed the example of Nienna, he took pity on the sorrows of the Children of Ilúvatar and drove those who listened to him out of despair. 
+            </p>
+        </div>
+    </div> -->
+                        
+{% endblock %}

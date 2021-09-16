@@ -2,6 +2,10 @@ core.Microsoft*
 core.mongo*
 core.python*
 env.py
+# The '/' at the end of some files here
+# identifies it as a directory & will 
+# therefore ignore everything within 
+# that folder as well.
 __pycache__/
 *.py[cod]
 node_modules/

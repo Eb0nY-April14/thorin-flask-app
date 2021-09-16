@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+                <!-- Core theme CSS (includes Bootstrap)-->
+    <!-- The purpose of the 1st argument which is 'static' is so that url_for knows 
+    to look in the 'static' directory for the file named 'css/clean-blog.min.css' -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/clean-blog.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+
+
+    <title>Hello Flask</title>
+</head>
+<body>
+    <!-- Navigation-->
+    <!-- <nav class="navbar navbar-expand-lg navbar-light" id="mainNav"> -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <!-- <div class="container px-4 px-lg-5"> -->
+        <div class="container">
+           <!--  <a class="navbar-brand" href="index.html">Start Bootstrap</a> -->
+            <a class="navbar-brand" href="{{ url_for('index') }}">Thorin &amp; Company</a>
+          <!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu -->
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+               <!-- <ul class="navbar-nav ms-auto py-4 py-lg-0"> --> 
+                <ul class="navbar-nav ml-auto">
+                <!--    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">Sample Post</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li> --> 
+
+                    <li class="nav-item">
+						<a class="nav-link" href="{{ url_for('index') }}">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('about') }}">About</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('contact') }}">Contact Us</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('careers') }}">Careers</a>
+					</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Page Header-->
+     <header class="masthead" style="background-image: url('https://pre00.deviantart.net/9ae0/th/pre/f/2013/275/8/f/the_hobbit__thorin_and_company_by_art_calavera-d5nay7b.png')"> 
+      <!--  <header class="masthead" style="background-image: url('img/home-bg.jpg')"> -->
+          <!--   <div class="container position-relative px-4 px-lg-5"> -->
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row"> 
+                <!-- <div class="row gx-4 gx-lg-5 justify-content-center"> -->
+               <!--  <div class="col-md-10 col-lg-8 col-xl-7"> -->
+                <div class="col-lg-8 col-md-10 mx-auto"> 
+                    <div class="site-heading">
+                        <h1>Thorin &amp; Company</h1>
+                        <span class="subheading">Thorin and his company of dwarves</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content-->
+    <!-- <div class="container px-4 px-lg-5"> -->
+    <div class="container">
+        <!-- All our other templates i.e index, about, contact & careers.html pages will inject
+        their appropriate content into this block element below. -->
+        {% block content %}
+        {% endblock %}      
+    </div> 
+    <hr>
+    <!-- Footer-->
+    <!-- <footer class="border-top"> -->
+    <footer>
+        <!-- <div class="container px-4 px-lg-5"> -->
+        <div class="container">
+           <!-- <div class="row gx-4 gx-lg-5 justify-content-center"> -->
+            <div class="row">
+               <!--  <div class="col-md-10 col-lg-8 col-xl-7"> -->
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <ul class="list-inline text-center">
+                        <!-- <li class="list-inline-item">
+                            <a href="#!"> -->
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>    
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!--  <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2019</div> -->
+                    <!-- <p class="copyright text-muted">Copyright &copy; Your Website 2020</p> -->
+                     <p class="small text-center text-muted fst-italic">Copyright &copy; Your Website <span id="copyright"></span></p> 
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Custom scripts for this template -->
+	<script src="{{ url_for('static', filename='js/clean-blog.min.js') }}"></script>
+
+    <script>
+        $("#copyright").text(new Date().getFullYear()); // This will get the current year & inject it as text inside our empty copyright span above
+    </script> 
+
+    <!-- For our nav links to work, we'll use the Jinja templating method of "url_for" 
+    to call the appropriate function. The format is {{ url_for('index') }} where index 
+    can be replaced with any html file name. What we are doing here is calling the url_for()
+    function that looks up the view called 'index()' or the view called 'about()'
+    and then inject some text which is the actual root i.e Flask looks up the index() & about()
+    views & inject the URL for each into the respective href. -->
+    <!-- Since we are using the 'Clean Blog' theme from startbootstrap.com, all we need do is add 
+    the class called 'navbar' already provided in our clean-blog CSS file to the <nav> element. -->
+    <!-- <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            <li><a href="{{ url_for('careers') }}">Careers</a></li>
+
+        </ul>
+    </nav>  -->
+
+    <!-- Here, we are defining a block/an area where we can inject content into from other pages. 
+    The difference between the 'double curly brackets' and 'curly bracket & percentage' is that the 
+    1st contain an 'expression' which outputs something either onto the screen or in our case, 
+    into our href while the 2nd are for statements that control the flow of our template such as 
+    a for-loop, if-statement or this block element used below.  -->
+    
+</body>
+</html>              
